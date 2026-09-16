@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Button } from "../../components/ui/button";
 import { Card, CardContent, CardHeader } from "../../components/ui/card";
 import { Input } from "../../components/ui/input";
@@ -59,6 +60,7 @@ export function LoginPage() {
                 <label className="block space-y-2 text-sm font-semibold">Password
                   <Input required type="password" value={password} onChange={(event) => setPassword(event.target.value)} placeholder="••••••••" className="mt-1 h-11 border-slate-300 bg-white/80" />
                 </label>
+                <div className="-mt-2 text-right"><Link className="text-sm font-medium text-sky-800 hover:underline" to="/forgot-password">Forgot password?</Link></div>
                 {error && <p role="alert" className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">{error}</p>}
                 <Button type="submit" className="h-12 w-full rounded-full bg-gradient-to-r from-sky-800 to-sky-500 text-base font-semibold shadow-lg shadow-sky-900/20" disabled={loading}>
                   {loading ? "Signing in…" : "Sign in"}
