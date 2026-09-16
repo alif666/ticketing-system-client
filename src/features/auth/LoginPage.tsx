@@ -1,0 +1,12 @@
+import { FormEvent, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Button } from "../../components/ui/button";
+import { Card, CardContent, CardHeader } from "../../components/ui/card";
+import { Input } from "../../components/ui/input";
+import { useAuth } from "./AuthContext";
+
+export function LoginPage() {
+  const { login } = useAuth(); const navigate = useNavigate(); const [email, setEmail] = useState(""); const [password, setPassword] = useState(""); const [error, setError] = useState(""); const [loading, setLoading] = useState(false);
+  async function submit(event: FormEvent) { event.preventDefault(); setError(""); setLoading(true); try { await login(email, password); navigate("/", { replace: true }); } catch (e) { setError(e instanceof Error ? e.message : "Unable to sign in"); } finally { setLoading(false); } }
+  return <main className="min-h-screen bg-background px-4 py-10"><div className="mx-auto grid min-h-[calc(100vh-5rem)] max-w-5xl items-center gap-8 lg:grid-cols-[1fr_420px]"><section className="hidden rounded-2xl bg-primary p-10 text-primary-foreground lg:block"><p className="text-sm font-semibold uppercase tracking-[0.25em] opacity-80">Pridesys</p><h1 className="mt-8 text-4xl font-semibold tracking-tight">Keep every issue moving forward.</h1><p className="mt-4 max-w-md text-primary-foreground/80">A focused workspace for projects, verification, and reliable customer support.</p></section><Card><CardHeader><p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">Ticketing workspace</p><h2 className="text-2xl font-semibold">Welcome back</h2><p className="text-sm text-muted-foreground">Sign in to continue to your projects.</p></CardHeader><CardContent><form onSubmit={submit} className="space-y-5"><label className="block space-y-2 text-sm font-medium">Email<Input required type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@company.com" /></label><label className="block space-y-2 text-sm font-medium">Password<Input required type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" /></label>{error && <p role="alert" className="rounded-md bg-red-50 p-3 text-sm text-red-700">{error}</p>}<Button type="submit" className="w-full" disabled={loading}>{loading ? "Signing in…" : "Sign in"}</Button></form></CardContent></Card></div></main>;
+}
