@@ -5,22 +5,33 @@
 
 :root {
   --radius: 0.625rem;
-  --background: #f8f9f4;
-  --foreground: #1b1d29;
+  --background: #f4f8fb;
+  --foreground: #142238;
   --card: #ffffff;
   --card-foreground: #1b1d29;
-  --primary: #7c8940;
+  --primary: #147fc2;
   --primary-foreground: #ffffff;
-  --secondary: #eef1df;
-  --secondary-foreground: #465020;
-  --muted: #eef0eb;
-  --muted-foreground: #68705c;
-  --accent: #e7ecd0;
-  --accent-foreground: #465020;
+  --secondary: #e5eef5;
+  --secondary-foreground: #174f76;
+  --muted: #eaf1f6;
+  --muted-foreground: #63768b;
+  --accent: #fff0d8;
+  --accent-foreground: #a96612;
   --destructive: #c2414d;
-  --border: #dde3cf;
-  --input: #dde3cf;
-  --ring: #b7c179;
+  --border: #d2e0eb;
+  --input: #c9d9e5;
+  --ring: #4ea5d7;
+}
+
+.login-shell {
+  background: radial-gradient(circle at 8% 18%, rgb(255 190 75 / 0.2), transparent 18%),
+    radial-gradient(circle at 86% 80%, rgb(47 159 218 / 0.28), transparent 32%),
+    linear-gradient(135deg, #164764 0%, #12618d 52%, #187bbb 100%);
+}
+
+.login-card {
+  background: linear-gradient(145deg, rgb(244 249 252 / 0.98), rgb(224 237 247 / 0.98));
+  box-shadow: 0 28px 70px rgb(4 34 57 / 0.3);
 }
 
 @theme inline {
