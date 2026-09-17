@@ -17,6 +17,8 @@ The issue workflow consumes the paginated issue, detail, audit, comment, and att
 
 The verification increment adds a role-restricted queue at `/verification`. APP_ADMIN and CLIENT_ADMIN can review pending issues, approve them, or reject them with a required reason; the queue uses the paginated verification API and refreshes after every decision. CLIENT_USER does not see the navigation item and receives a permission message if the route is opened directly.
 
+Pagination controls now include a Records per page selector for projects, modules, issues, and the verification queue. The Kanban board uses a bounded viewport with independently scrollable stage columns, so large issue sets do not make the entire page excessively tall.
+
 ### Manual checkpoint for this increment
 
 1. Start the backend dependencies and API, then run `npm run dev`.

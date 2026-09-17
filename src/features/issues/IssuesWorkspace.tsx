@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Button } from "../../components/ui/button";
 import { Card, CardContent } from "../../components/ui/card";
 import { FormDialog } from "../../components/layout/FormDialog";
+import { PaginationControls } from "../../components/layout/PaginationControls";
 import { useAuth } from "../auth/AuthContext";
 import { useProjects } from "../projects/useProjects";
 import { IssueBoard } from "./components/IssueBoard";
@@ -261,7 +262,7 @@ export function IssuesWorkspace() {
               </CardContent>
             </Card>
           ) : (
-            <div className="overflow-x-auto pb-2">
+            <div className="h-[min(70vh,720px)] min-h-[420px] overflow-auto rounded-xl border bg-background p-3 pb-4">
               <IssueBoard
                 issues={issues.issues}
                 selectedIssueId={issues.selectedIssueId}
@@ -272,29 +273,7 @@ export function IssuesWorkspace() {
               />
             </div>
           )}
-          <div className="flex items-center justify-between text-sm text-muted-foreground">
-            <span>
-              Page {issues.page + 1} of {Math.max(issues.totalPages, 1)}
-            </span>
-            <div className="flex gap-2">
-              <Button
-                type="button"
-                disabled={issues.page === 0}
-                onClick={() => issues.setPage(issues.page - 1)}
-                className="h-8 bg-secondary px-3 text-secondary-foreground"
-              >
-                Previous
-              </Button>
-              <Button
-                type="button"
-                disabled={issues.page + 1 >= issues.totalPages}
-                onClick={() => issues.setPage(issues.page + 1)}
-                className="h-8 bg-secondary px-3 text-secondary-foreground"
-              >
-                Next
-              </Button>
-            </div>
-          </div>
+          <PaginationControls page={issues.page} totalPages={issues.totalPages} pageSize={issues.pageSize} pageSizeOptions={[10, 25, 50]} onPageChange={issues.setPage} onPageSizeChange={issues.setPageSize} />
           {issues.selectedIssue && (
             <IssueDetail
               issue={issues.selectedIssue}

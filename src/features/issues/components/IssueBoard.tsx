@@ -34,7 +34,7 @@ export function IssueBoard({
       : []),
   ];
   return (
-    <div className="grid min-w-[1280px] grid-cols-7 gap-3">
+    <div className="grid h-full min-w-[1280px] grid-cols-7 gap-3">
       {columns.map((stage) => {
         const columnIssues = issues.filter((issue) => issue.stage === stage);
         return (
@@ -53,7 +53,7 @@ export function IssueBoard({
                 void onMove(issue.id, stage);
               }
             }}
-            className="min-h-56 rounded-xl bg-muted/70 p-3"
+            className="flex min-h-0 flex-col rounded-xl bg-muted/70 p-3"
           >
             <div className="mb-3 flex items-center justify-between">
               <h3 className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
@@ -63,7 +63,7 @@ export function IssueBoard({
                 {columnIssues.length}
               </span>
             </div>
-            <div className="space-y-3">
+            <div className="min-h-0 flex-1 space-y-3 overflow-y-auto pr-1">
               {columnIssues.map((issue) => (
                 <button
                   type="button"

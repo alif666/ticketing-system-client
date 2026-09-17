@@ -2,10 +2,11 @@ import { useCallback, useEffect, useState } from "react";
 import { apiFetch } from "../../lib/api";
 import type { Issue, IssuePage } from "../issues/types";
 
-const PAGE_SIZE = 20;
+const DEFAULT_PAGE_SIZE = 20;
 
 export function useVerificationQueue() {
   const [page, setPage] = useState(0);
+  const [pageSize, setPageSizeState] = useState(DEFAULT_PAGE_SIZE);
   const [result, setResult] = useState<IssuePage | null>(null);
   const [loading, setLoading] = useState(false);
   const [actionLoading, setActionLoading] = useState(false);
@@ -17,7 +18,7 @@ export function useVerificationQueue() {
     try {
       setResult(
         await apiFetch<IssuePage>(
-          `/api/issues/verification-queue?page=${page}&size=${PAGE_SIZE}`,
+          `/api/issues/verification-queue?page=${page}&size=${pageSize}`,
         ),
       );
     } catch (exception) {
@@ -29,7 +30,7 @@ export function useVerificationQueue() {
     } finally {
       setLoading(false);
     }
-  }, [page]);
+  }, [page, pageSize]);
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -60,16 +61,22 @@ export function useVerificationQueue() {
       setActionLoading(false);
     }
   };
+  const setPageSize = (size: number) => {
+    setPage(0);
+    setPageSizeState(size);
+  };
 
   return {
     issues: result?.content ?? [],
     page,
+    pageSize,
     totalPages: result?.totalPages ?? 0,
     totalElements: result?.totalElements ?? 0,
     loading,
     actionLoading,
     error,
     setPage,
+    setPageSize,
     decide,
     reload: load,
   };

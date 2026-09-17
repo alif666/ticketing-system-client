@@ -9,7 +9,7 @@ import type {
   IssueType,
 } from "./types";
 
-const PAGE_SIZE = 50;
+const DEFAULT_PAGE_SIZE = 50;
 
 type IssueFilters = {
   query: string;
@@ -30,6 +30,7 @@ const initialFilters: IssueFilters = {
 export function useIssues(projectId: number | null) {
   const [filters, setFilters] = useState<IssueFilters>(initialFilters);
   const [page, setPage] = useState(0);
+  const [pageSize, setPageSizeState] = useState(DEFAULT_PAGE_SIZE);
   const [result, setResult] = useState<IssuePage | null>(null);
   const [selectedIssueId, setSelectedIssueId] = useState<number | null>(null);
   const [selectedIssue, setSelectedIssue] = useState<Issue | null>(null);
@@ -47,7 +48,7 @@ export function useIssues(projectId: number | null) {
     const params = new URLSearchParams({
       projectId: String(projectId),
       page: String(page),
-      size: String(PAGE_SIZE),
+      size: String(pageSize),
     });
     if (filters.query.trim()) params.set("q", filters.query.trim());
     if (filters.stage !== "ALL") params.set("stage", filters.stage);
@@ -69,7 +70,7 @@ export function useIssues(projectId: number | null) {
     } finally {
       setLoading(false);
     }
-  }, [filters, page, projectId]);
+  }, [filters, page, pageSize, projectId]);
 
   const loadDetail = useCallback(async (issueId: number | null) => {
     if (!issueId) {
@@ -116,6 +117,10 @@ export function useIssues(projectId: number | null) {
     await loadIssues();
     await loadDetail(selectedIssueId);
   };
+  const setPageSize = (size: number) => {
+    setPage(0);
+    setPageSizeState(size);
+  };
   const createIssue = async (
     payload: Pick<Issue, "title" | "description" | "type" | "priority"> & {
       projectId: number;
@@ -157,7 +162,9 @@ export function useIssues(projectId: number | null) {
     issues: result?.content ?? [],
     totalPages: result?.totalPages ?? 0,
     page,
+    pageSize,
     setPage,
+    setPageSize,
     filters,
     setFilters: (next: Partial<IssueFilters>) => {
       setPage(0);

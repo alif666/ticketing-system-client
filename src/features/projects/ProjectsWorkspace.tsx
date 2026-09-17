@@ -18,11 +18,15 @@ export function ProjectsWorkspace() {
     selectedProjectId,
     selectProject,
     projectPage,
+    projectPageSize,
     projectTotalPages,
     modulePage,
+    modulePageSize,
     moduleTotalPages,
     setProjectPage,
+    setProjectPageSize,
     setModulePage,
+    setModulePageSize,
     loading,
     modulesLoading,
     modulesError,
@@ -188,6 +192,8 @@ export function ProjectsWorkspace() {
             onSelect={selectProject}
             page={projectPage}
             totalPages={projectTotalPages}
+            pageSize={projectPageSize}
+            onPageSizeChange={setProjectPageSize}
             onPageChange={setProjectPage}
           />
           <Card>
@@ -257,6 +263,8 @@ export function ProjectsWorkspace() {
                   onDelete={removeModule}
                   page={modulePage}
                   totalPages={moduleTotalPages}
+                  pageSize={modulePageSize}
+                  onPageSizeChange={setModulePageSize}
                   onPageChange={setModulePage}
                 />
               )}

@@ -1,7 +1,7 @@
 import { FolderKanban } from "lucide-react";
 import { Card, CardContent, CardHeader } from "../../../components/ui/card";
+import { PaginationControls } from "../../../components/layout/PaginationControls";
 import type { Project } from "../types";
-import { Pagination } from "./Pagination";
 
 type ProjectListProps = {
   projects: Project[];
@@ -9,10 +9,12 @@ type ProjectListProps = {
   onSelect: (id: number) => void;
   page: number;
   totalPages: number;
+  pageSize: number;
+  onPageSizeChange: (size: number) => void;
   onPageChange: (page: number) => void;
 };
 
-export function ProjectList({ projects, selectedProjectId, onSelect, page, totalPages, onPageChange }: ProjectListProps) {
+export function ProjectList({ projects, selectedProjectId, onSelect, page, totalPages, pageSize, onPageSizeChange, onPageChange }: ProjectListProps) {
   return (
     <Card>
       <CardHeader className="border-b py-4"><div className="flex items-center gap-2"><FolderKanban className="h-4 w-4 text-primary" /><div><h3 className="font-semibold">Projects</h3><p className="text-xs text-muted-foreground">Select a workspace to manage its modules.</p></div></div></CardHeader>
@@ -26,7 +28,7 @@ export function ProjectList({ projects, selectedProjectId, onSelect, page, total
             </button>
           ))}
         </div>
-        <Pagination page={page} totalPages={totalPages} onChange={onPageChange} />
+        <PaginationControls page={page} totalPages={totalPages} pageSize={pageSize} onPageChange={onPageChange} onPageSizeChange={onPageSizeChange} />
       </CardContent>
     </Card>
   );

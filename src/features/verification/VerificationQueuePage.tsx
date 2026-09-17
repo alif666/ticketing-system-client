@@ -2,6 +2,7 @@ import { CheckCircle2, Clock3, RefreshCw, ShieldCheck, XCircle } from "lucide-re
 import { useState } from "react";
 import { Button } from "../../components/ui/button";
 import { Card, CardContent, CardHeader } from "../../components/ui/card";
+import { PaginationControls } from "../../components/layout/PaginationControls";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "../../components/ui/dialog";
 import { Input } from "../../components/ui/input";
 import { formatDate } from "../../lib/date";
@@ -55,7 +56,7 @@ export function VerificationQueuePage() {
         <CardHeader className="flex-row items-center justify-between gap-3 border-b"><div><h2 className="font-semibold">Pending review</h2><p className="text-xs text-muted-foreground">{queue.totalElements} issue{queue.totalElements === 1 ? "" : "s"} awaiting a decision.</p></div><ShieldCheck className="h-5 w-5 text-primary" /></CardHeader>
         <CardContent className="pt-5">
           {queue.loading ? <p className="py-10 text-center text-sm text-muted-foreground">Loading verification queue…</p> : queue.issues.length ? <div className="space-y-3">{queue.issues.map((issue) => <QueueItem key={issue.id} issue={issue} disabled={queue.actionLoading} onApprove={() => void approve(issue)} onReject={() => { setRejecting(issue); setReason(""); setDialogError(""); }} />)}</div> : <div className="rounded-xl border border-dashed p-12 text-center"><CheckCircle2 className="mx-auto h-8 w-8 text-emerald-600" /><p className="mt-3 font-medium">Queue is clear</p><p className="mt-1 text-sm text-muted-foreground">There are no issues waiting for verification.</p></div>}
-          {queue.totalPages > 1 && <div className="mt-5 flex items-center justify-between border-t pt-4 text-xs text-muted-foreground"><span>Page {queue.page + 1} of {queue.totalPages}</span><div className="flex gap-2"><Button type="button" disabled={queue.page === 0 || queue.loading} onClick={() => queue.setPage(queue.page - 1)} className="h-8 bg-secondary px-3 text-secondary-foreground">Previous</Button><Button type="button" disabled={queue.page + 1 >= queue.totalPages || queue.loading} onClick={() => queue.setPage(queue.page + 1)} className="h-8 bg-secondary px-3 text-secondary-foreground">Next</Button></div></div>}
+          <PaginationControls page={queue.page} totalPages={queue.totalPages} pageSize={queue.pageSize} pageSizeOptions={[10, 20, 50]} onPageChange={queue.setPage} onPageSizeChange={queue.setPageSize} />
         </CardContent>
       </Card>
       <Dialog open={rejecting !== null} onOpenChange={(open) => { if (!open && !queue.actionLoading) { setRejecting(null); setDialogError(""); } }}>
