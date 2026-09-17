@@ -55,3 +55,13 @@ The project-membership increment adds an APP_ADMIN-only Manage members dialog to
 npm run build
 npm run lint
 ```
+
+### Final submission checkpoint
+
+1. Start the backend with `docker compose up --build`, then start this SPA with `npm run dev`.
+2. Verify the three seeded roles: APP_ADMIN sees project and membership administration; CLIENT_ADMIN sees only permitted user/module/verification actions; CLIENT_USER sees only permitted project and issue workflows.
+3. As APP_ADMIN, assign a client account to a project through **Manage members**, then verify that account can see the project; remove the membership and verify access is gone.
+4. Run through issue creation, module filtering, Kanban transitions, comments, attachment upload/download/delete, verification approval/rejection, and audit history.
+5. Check responsive navigation, pagination/Records per page controls, empty/error states, and sign-out/session restoration.
+
+The client does not contain credentials or database data. Configure `VITE_API_BASE_URL` only when the API is not running at its default `http://localhost:8080`.
