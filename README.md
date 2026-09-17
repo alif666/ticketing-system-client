@@ -21,6 +21,17 @@ Pagination controls now include a Records per page selector for projects, module
 
 The user-management increment adds `/users` for APP_ADMIN and CLIENT_ADMIN. It supports server-side name/email search and pagination, role-aware user creation, profile editing, active-status updates, and deactivation with confirmation. CLIENT_USER cannot access this workspace.
 
+The project-membership increment adds an APP_ADMIN-only Manage members dialog to the Projects workspace. It consumes the paginated project-member endpoint and the existing membership add/remove endpoints. Client administrators and client users can be assigned to projects, while project membership administration remains unavailable to client roles.
+
+### Manual checkpoint for project membership
+
+1. Sign in as `app.admin@example.com` and open Projects.
+2. Select a project and choose **Manage members**.
+3. Assign an active `CLIENT_USER` or `CLIENT_ADMIN`; confirm it appears under Current members.
+4. Remove the member and confirm the user returns to Available client users.
+5. Sign in as that member and verify the project is now visible; after removal, it is no longer visible.
+6. Sign in as `client.admin@example.com` and confirm Manage members is not available.
+
 ### Manual checkpoint for user management
 
 1. Sign in as `app.admin@example.com` or `client.admin@example.com` and open User management.

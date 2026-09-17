@@ -1,4 +1,4 @@
-import { FolderKanban, Pencil, Plus } from "lucide-react";
+import { FolderKanban, Pencil, Plus, Users } from "lucide-react";
 import { useState } from "react";
 import { FormDialog } from "../../components/layout/FormDialog";
 import { Button } from "../../components/ui/button";
@@ -9,6 +9,7 @@ import { ModuleList } from "./components/ModuleList";
 import { ProjectForm } from "./components/ProjectForm";
 import { ProjectList } from "./components/ProjectList";
 import { useProjects } from "./useProjects";
+import { ProjectMembersDialog } from "./components/ProjectMembersDialog";
 
 export function ProjectsWorkspace() {
   const { user } = useAuth();
@@ -41,6 +42,7 @@ export function ProjectsWorkspace() {
   const [editingProject, setEditingProject] = useState(false);
   const [moduleForm, setModuleForm] = useState<"create" | number | null>(null);
   const [actionError, setActionError] = useState("");
+  const [membersOpen, setMembersOpen] = useState(false);
   const canManageModules =
     user?.role === "APP_ADMIN" || user?.role === "CLIENT_ADMIN";
   const canManageProjects = user?.role === "APP_ADMIN";
@@ -222,6 +224,12 @@ export function ProjectsWorkspace() {
                     Edit project
                   </Button>
                 )}
+                {canManageProjects && (
+                  <Button onClick={() => setMembersOpen(true)} className="bg-secondary text-secondary-foreground">
+                    <Users className="mr-2 h-4 w-4" />
+                    Manage members
+                  </Button>
+                )}
                 {canManageModules && (
                   <Button onClick={() => setModuleForm("create")}>
                     <Plus className="mr-2 h-4 w-4" />
@@ -272,6 +280,7 @@ export function ProjectsWorkspace() {
           </Card>
         </div>
       )}
+      <ProjectMembersDialog open={membersOpen} projectId={selectedProjectId} projectName={selectedProject?.name} onClose={() => setMembersOpen(false)} />
     </div>
   );
 }
