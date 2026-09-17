@@ -2,6 +2,14 @@
 
 React 19 + Vite + TypeScript SPA for the Pridesys ticketing assignment. The client uses feature-oriented folders under `src/features`, shared UI primitives under `src/components/ui`, and a small REST client under `src/lib`.
 
+## Architecture decisions
+
+- React 19 with Vite and TypeScript provides a browser-only SPA that can be deployed independently from the Spring Boot service.
+- Feature folders isolate authentication, projects/modules, issues/collaboration, verification, and user management; shared dialogs, pagination, navigation, and UI primitives remain under `src/components`.
+- `src/lib/api.ts` is the single authenticated REST boundary: it attaches the JWT, handles JSON/FormData requests, and surfaces API errors to feature hooks.
+- Server-side authorization remains authoritative. The client hides unavailable navigation/actions for usability, but treats `401`/`403` responses as permission states rather than relying on UI hiding for security.
+- The client consumes the service's paginated response envelope and does not duplicate credentials, domain persistence, or attachment storage locally.
+
 ### Development
 
 ```bash
