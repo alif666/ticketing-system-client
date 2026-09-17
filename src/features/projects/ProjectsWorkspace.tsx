@@ -3,6 +3,7 @@ import { useState } from "react";
 import { FormDialog } from "../../components/layout/FormDialog";
 import { Button } from "../../components/ui/button";
 import { Card, CardContent, CardHeader } from "../../components/ui/card";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "../../components/ui/dialog";
 import { useAuth } from "../auth/AuthContext";
 import { ModuleForm } from "./components/ModuleForm";
 import { ModuleList } from "./components/ModuleList";
@@ -34,6 +35,7 @@ export function ProjectsWorkspace() {
     error,
     createProject,
     updateProject,
+    deleteProject,
     createModule,
     updateModule,
     deleteModule,
@@ -43,6 +45,7 @@ export function ProjectsWorkspace() {
   const [moduleForm, setModuleForm] = useState<"create" | number | null>(null);
   const [actionError, setActionError] = useState("");
   const [membersOpen, setMembersOpen] = useState(false);
+  const [deletingProject, setDeletingProject] = useState(false);
   const canManageModules =
     user?.role === "APP_ADMIN" || user?.role === "CLIENT_ADMIN";
   const canManageProjects = user?.role === "APP_ADMIN";
@@ -64,6 +67,18 @@ export function ProjectsWorkspace() {
     if (selectedProject) {
       setEditingProject(true);
       setProjectFormOpen(true);
+    }
+  }
+
+  async function removeProject() {
+    if (!selectedProjectId) return;
+    try {
+      await deleteProject(selectedProjectId);
+      setDeletingProject(false);
+      setActionError("");
+    } catch (exception) {
+      setActionError(exception instanceof Error ? exception.message : "Unable to delete project");
+      setDeletingProject(false);
     }
   }
 
@@ -230,6 +245,11 @@ export function ProjectsWorkspace() {
                     Manage members
                   </Button>
                 )}
+                {canManageProjects && (
+                  <Button onClick={() => setDeletingProject(true)} className="bg-red-600 text-white hover:bg-red-700">
+                    Delete project
+                  </Button>
+                )}
                 {canManageModules && (
                   <Button onClick={() => setModuleForm("create")}>
                     <Plus className="mr-2 h-4 w-4" />
@@ -281,6 +301,7 @@ export function ProjectsWorkspace() {
         </div>
       )}
       <ProjectMembersDialog open={membersOpen} projectId={selectedProjectId} projectName={selectedProject?.name} onClose={() => setMembersOpen(false)} />
+      <Dialog open={deletingProject} onOpenChange={setDeletingProject}><DialogContent><DialogHeader><DialogTitle>Delete project permanently?</DialogTitle><DialogDescription>This removes the project, its modules, and memberships only when no issues reference the project. Projects with issues cannot be deleted.</DialogDescription></DialogHeader><DialogFooter><Button type="button" onClick={() => setDeletingProject(false)} className="bg-secondary text-secondary-foreground">Cancel</Button><Button type="button" onClick={() => void removeProject()} className="bg-red-600 text-white hover:bg-red-700">Delete project</Button></DialogFooter></DialogContent></Dialog>
     </div>
   );
 }

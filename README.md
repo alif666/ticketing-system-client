@@ -31,6 +31,8 @@ The user-management increment adds `/users` for APP_ADMIN and CLIENT_ADMIN. It s
 
 The project-membership increment adds an APP_ADMIN-only Manage members dialog to the Projects workspace. It consumes the paginated project-member endpoint and the existing membership add/remove endpoints. Client administrators and client users can be assigned to projects, while project membership administration remains unavailable to client roles.
 
+Deletion controls follow the service rules: APP_ADMIN sees confirmed user and project delete actions; CLIENT_ADMIN retains deactivation and module management but cannot delete users or projects. Users with issues, and projects/modules referenced by issues, remain protected by the API and surface a conflict message so the operator can deactivate or retain them instead.
+
 ### Manual checkpoint for project membership
 
 1. Sign in as `app.admin@example.com` and open Projects.

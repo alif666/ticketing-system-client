@@ -109,6 +109,10 @@ export function useProjects() {
     });
     await loadProjects(projectPage, projectPageSize);
   };
+  const deleteProject = async (projectId: number) => {
+    await apiFetch(`/api/projects/${projectId}`, { method: "DELETE" });
+    await loadProjects(projectPage, projectPageSize);
+  };
   const createModule = async (name: string, description: string) => {
     if (!selectedProjectId) return;
     await apiFetch(`/api/projects/${selectedProjectId}/modules`, {
@@ -159,6 +163,7 @@ export function useProjects() {
     error,
     createProject,
     updateProject,
+    deleteProject,
     createModule,
     updateModule,
     deleteModule,

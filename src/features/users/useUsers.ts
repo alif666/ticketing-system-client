@@ -73,6 +73,15 @@ export function useUsers() {
       setActionLoading(false);
     }
   };
+  const deleteUser = async (id: number) => {
+    setActionLoading(true);
+    try {
+      await apiFetch(`/api/users/${id}`, { method: "DELETE" });
+      await load();
+    } finally {
+      setActionLoading(false);
+    }
+  };
 
   return {
     query,
@@ -90,6 +99,7 @@ export function useUsers() {
     createUser,
     updateUser,
     deactivateUser,
+    deleteUser,
     reload: load,
   };
 }
