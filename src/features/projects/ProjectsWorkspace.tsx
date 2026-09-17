@@ -181,7 +181,7 @@ export function ProjectsWorkspace() {
           </CardContent>
         </Card>
       ) : (
-        <div className="grid gap-6 lg:grid-cols-[280px_1fr]">
+        <div className="space-y-6">
           <ProjectList
             projects={projects}
             selectedProjectId={selectedProjectId}
@@ -191,20 +191,22 @@ export function ProjectsWorkspace() {
             onPageChange={setProjectPage}
           />
           <Card>
-            <CardHeader className="flex-row items-start justify-between space-y-0">
-              <div>
+            <CardHeader className="gap-4 border-b bg-muted/20 sm:flex-row sm:items-start sm:justify-between">
+              <div className="min-w-0">
                 <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
-                  Project modules
+                  Selected workspace
                 </p>
-                <h3 className="mt-1 text-2xl font-semibold">
-                  {selectedProject?.name}
-                </h3>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  {selectedProject?.description ||
-                    "Organize issues by functional area."}
+                <div className="mt-1 flex flex-wrap items-center gap-3">
+                  <h3 className="text-2xl font-semibold">{selectedProject?.name}</h3>
+                  <span className={`rounded-full px-2 py-1 text-[10px] font-bold uppercase tracking-wide ${selectedProject?.active ? "bg-emerald-100 text-emerald-800" : "bg-muted text-muted-foreground"}`}>
+                    {selectedProject?.active ? "Active" : "Inactive"}
+                  </span>
+                </div>
+                <p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">
+                  {selectedProject?.description || "Organize issues by functional area."}
                 </p>
               </div>
-              <div className="flex gap-2">
+              <div className="flex shrink-0 flex-wrap gap-2">
                 {canManageProjects && (
                   <Button
                     onClick={openEditProject}
@@ -222,7 +224,11 @@ export function ProjectsWorkspace() {
                 )}
               </div>
             </CardHeader>
-            <CardContent>
+            <CardContent className="pt-5">
+              <div className="mb-4 flex items-center justify-between gap-3">
+                <div><h4 className="font-semibold">Modules</h4><p className="text-xs text-muted-foreground">Functional areas used to organize this project&apos;s issues.</p></div>
+                <span className="hidden rounded-full bg-secondary px-2.5 py-1 text-xs font-medium text-secondary-foreground sm:inline-flex">{modules.length} visible</span>
+              </div>
               {actionError && (
                 <p
                   role="alert"
