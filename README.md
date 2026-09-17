@@ -75,3 +75,12 @@ npm run lint
 5. Check responsive navigation, pagination/Records per page controls, empty/error states, and sign-out/session restoration.
 
 The client does not contain credentials or database data. Configure `VITE_API_BASE_URL` only when the API is not running at its default `http://localhost:8080`.
+
+## Future hardening scope
+
+These are follow-up improvements, not assignment-blocking trade-offs. The current client preserves successful API behavior and relies on the service as the security authority.
+
+- Centralize presentation of `401`, `403`, and `409` responses so session expiry, permission denial, and deletion conflicts have one consistent UX.
+- Introduce one shared destructive-action dialog for all delete/deactivation flows with common focus, loading, and error behavior.
+- Add an accessibility pass for keyboard focus, dialog focus restoration, labels, and screen-reader error announcements.
+- Add service/client contract checks around the standardized error envelope when the backend hardening work is introduced.
