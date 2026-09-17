@@ -1,5 +1,6 @@
 import { CalendarDays, CircleAlert, MessageSquareText } from "lucide-react";
 import type { Issue, IssueStage } from "../types";
+import { formatDate } from "../../../lib/date";
 import { boardStages, formatStage } from "./issueStages";
 
 const priorityStyles: Record<Issue["priority"], string> = {
@@ -91,7 +92,7 @@ export function IssueBoard({
                     </span>
                     <span className="flex items-center gap-1">
                       <CalendarDays className="h-3 w-3" />
-                      {new Date(issue.updatedAt).toLocaleDateString()}
+                      {formatDate(issue.updatedAt)}
                     </span>
                   </div>
                   {issue.verificationStatus === "PENDING_VERIFICATION" && (

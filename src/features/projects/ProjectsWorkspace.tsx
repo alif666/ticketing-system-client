@@ -25,6 +25,7 @@ export function ProjectsWorkspace() {
     setModulePage,
     loading,
     modulesLoading,
+    modulesError,
     error,
     createProject,
     updateProject,
@@ -228,6 +229,14 @@ export function ProjectsWorkspace() {
                   className="mb-4 rounded-md bg-red-50 p-3 text-sm text-red-700"
                 >
                   {actionError}
+                </p>
+              )}
+              {modulesError && (
+                <p
+                  role="alert"
+                  className="mb-4 rounded-md bg-amber-50 p-3 text-sm text-amber-800"
+                >
+                  Modules are currently unavailable for this account.
                 </p>
               )}
               {modulesLoading ? (

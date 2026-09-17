@@ -8,10 +8,19 @@ import {
   Trash2,
   X,
 } from "lucide-react";
-import { useState, type FormEvent } from "react";
+import { useState, type ChangeEvent, type FormEvent } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "../../../components/ui/dialog";
 import { Button } from "../../../components/ui/button";
 import { Card, CardContent, CardHeader } from "../../../components/ui/card";
 import { Input } from "../../../components/ui/input";
+import { formatDate } from "../../../lib/date";
 import { useAuth } from "../../auth/AuthContext";
 import { useIssueCollaboration } from "./useIssueCollaboration";
 import type { Attachment } from "./types";
@@ -31,6 +40,8 @@ export function IssueCollaboration({ issueId }: { issueId: number }) {
   const [editingComment, setEditingComment] = useState<number | null>(null);
   const [editingBody, setEditingBody] = useState("");
   const [saving, setSaving] = useState(false);
+  const [attachmentToDelete, setAttachmentToDelete] =
+    useState<Attachment | null>(null);
 
   async function submitComment(event: FormEvent) {
     event.preventDefault();
@@ -73,18 +84,20 @@ export function IssueCollaboration({ issueId }: { issueId: number }) {
     }
   }
 
-  async function upload(event: React.ChangeEvent<HTMLInputElement>) {
+  async function upload(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
     event.target.value = "";
     if (!file) return;
-    if (file.size > 10 * 1024 * 1024 || !allowedTypes.has(file.type)) {
+    const isZip = file.name.toLowerCase().endsWith(".zip");
+    if (file.size > 10 * 1024 * 1024 || (!allowedTypes.has(file.type) && !isZip)) {
       collaboration.setError(
         "Attachment must be a PNG, JPEG, PDF, text, or ZIP file up to 10 MB.",
       );
       return;
     }
     try {
-      await collaboration.uploadAttachment(file);
+      const uploadFile = isZip && file.type !== "application/zip" ? new File([file], file.name, { type: "application/zip", lastModified: file.lastModified }) : file;
+      await collaboration.uploadAttachment(uploadFile);
     } catch (exception) {
       collaboration.setError(
         exception instanceof Error
@@ -107,9 +120,9 @@ export function IssueCollaboration({ issueId }: { issueId: number }) {
   }
 
   async function removeAttachment(attachment: Attachment) {
-    if (!window.confirm("Delete this attachment?")) return;
     try {
       await collaboration.deleteAttachment(attachment.id);
+      setAttachmentToDelete(null);
     } catch (exception) {
       collaboration.setError(
         exception instanceof Error
@@ -184,7 +197,7 @@ export function IssueCollaboration({ issueId }: { issueId: number }) {
                           User #{comment.authorId}
                         </p>
                         <p className="text-[11px] text-muted-foreground">
-                          {new Date(comment.createdAt).toLocaleString()}
+                          {formatDate(comment.createdAt)}
                           {comment.edited && " · edited"}
                         </p>
                       </div>
@@ -273,7 +286,7 @@ export function IssueCollaboration({ issueId }: { issueId: number }) {
                         </p>
                         <p className="text-xs text-muted-foreground">
                           {formatBytes(attachment.sizeBytes)} ·{" "}
-                          {new Date(attachment.createdAt).toLocaleDateString()}
+                          {formatDate(attachment.createdAt)}
                         </p>
                       </div>
                     </div>
@@ -289,7 +302,7 @@ export function IssueCollaboration({ issueId }: { issueId: number }) {
                       {canDelete && (
                         <button
                           type="button"
-                          onClick={() => removeAttachment(attachment)}
+                          onClick={() => setAttachmentToDelete(attachment)}
                           className="rounded-md p-1.5 text-red-600 hover:bg-red-50"
                           aria-label={`Delete ${attachment.originalName}`}
                         >
@@ -306,6 +319,40 @@ export function IssueCollaboration({ issueId }: { issueId: number }) {
           )}
         </CardContent>
       </Card>
+      <Dialog
+        open={attachmentToDelete !== null}
+        onOpenChange={(open) => {
+          if (!open) setAttachmentToDelete(null);
+        }}
+      >
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Delete attachment?</DialogTitle>
+            <DialogDescription>
+              This will permanently remove{" "}
+              {attachmentToDelete?.originalName ?? "this file"} from the issue.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button
+              type="button"
+              onClick={() => setAttachmentToDelete(null)}
+              className="bg-secondary text-secondary-foreground"
+            >
+              Cancel
+            </Button>
+            <Button
+              type="button"
+              onClick={() =>
+                attachmentToDelete && void removeAttachment(attachmentToDelete)
+              }
+              className="bg-red-600 text-white hover:bg-red-700"
+            >
+              Delete attachment
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

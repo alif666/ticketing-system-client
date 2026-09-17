@@ -8,6 +8,7 @@ import { IssueCollaboration } from "../collaboration/IssueCollaboration";
 import { formatStage } from "./issueStages";
 import { IssueForm } from "./IssueForm";
 import type { Issue, IssueStage } from "../types";
+import { formatDate } from "../../../lib/date";
 
 const nextStages: Partial<Record<IssueStage, IssueStage[]>> = {
   SUBMITTED: ["RECEIVED", "DECLINED"],
@@ -179,7 +180,7 @@ export function IssueDetail({
                         {entry.fieldName ? ` · ${entry.fieldName}` : ""}
                       </span>
                       <time className="text-muted-foreground">
-                        {new Date(entry.createdAt).toLocaleString()}
+                        {formatDate(entry.createdAt)}
                       </time>
                     </div>
                     {entry.oldValue && (
