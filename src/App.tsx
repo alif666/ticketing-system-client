@@ -9,6 +9,7 @@ import { AppShell } from "./components/layout/AppShell";
 import { PlaceholderPage } from "./features/shared/PlaceholderPage";
 import { ProjectsWorkspace } from "./features/projects/ProjectsWorkspace";
 import { IssuesWorkspace } from "./features/issues/IssuesWorkspace";
+import { VerificationQueuePage } from "./features/verification/VerificationQueuePage";
 
 function ProtectedRoutes() {
   const { user, loading } = useAuth();
@@ -50,12 +51,7 @@ function ProtectedRoutes() {
         />
         <Route
           path="/verification"
-          element={
-            <PlaceholderPage
-              title="Verification queue"
-              description="Pending verification, approval, rejection, and audit decisions will be added with the issue workflow."
-            />
-          }
+          element={<VerificationQueuePage />}
         />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

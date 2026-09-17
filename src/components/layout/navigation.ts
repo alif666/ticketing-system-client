@@ -49,7 +49,7 @@ export const navigationItems: NavigationItem[] = [
     label: "Verification queue",
     path: "/verification",
     icon: ShieldCheck,
-    implemented: false,
+    implemented: true,
     roles: ["APP_ADMIN", "CLIENT_ADMIN"],
   },
   {
