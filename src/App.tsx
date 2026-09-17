@@ -6,10 +6,10 @@ import { ProfilePage } from "./features/auth/ProfilePage";
 import { ForgotPasswordPage } from "./features/auth/ForgotPasswordPage";
 import { ResetPasswordPage } from "./features/auth/ResetPasswordPage";
 import { AppShell } from "./components/layout/AppShell";
-import { PlaceholderPage } from "./features/shared/PlaceholderPage";
 import { ProjectsWorkspace } from "./features/projects/ProjectsWorkspace";
 import { IssuesWorkspace } from "./features/issues/IssuesWorkspace";
 import { VerificationQueuePage } from "./features/verification/VerificationQueuePage";
+import { UserManagementPage } from "./features/users/UserManagementPage";
 
 function ProtectedRoutes() {
   const { user, loading } = useAuth();
@@ -42,12 +42,7 @@ function ProtectedRoutes() {
         <Route path="/profile" element={<ProfilePage />} />
         <Route
           path="/users"
-          element={
-            <PlaceholderPage
-              title="User management"
-              description="User listing, role assignment, deactivation, and client-scoped administration will be added in the administration increment."
-            />
-          }
+          element={<UserManagementPage />}
         />
         <Route
           path="/verification"

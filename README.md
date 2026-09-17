@@ -19,6 +19,17 @@ The verification increment adds a role-restricted queue at `/verification`. APP_
 
 Pagination controls now include a Records per page selector for projects, modules, issues, and the verification queue. The Kanban board uses a bounded viewport with independently scrollable stage columns, so large issue sets do not make the entire page excessively tall.
 
+The user-management increment adds `/users` for APP_ADMIN and CLIENT_ADMIN. It supports server-side name/email search and pagination, role-aware user creation, profile editing, active-status updates, and deactivation with confirmation. CLIENT_USER cannot access this workspace.
+
+### Manual checkpoint for user management
+
+1. Sign in as `app.admin@example.com` or `client.admin@example.com` and open User management.
+2. Search by a user name or email and confirm the results reload from the server.
+3. Change Records per page and verify pagination metadata and controls update.
+4. Create a client user from the modal, then edit its profile fields and active status.
+5. Deactivate a test account, cancel once in the confirmation dialog, then confirm deactivation.
+6. Sign in as `client.user@example.com`; User management must be absent from navigation and direct access must show a permission state.
+
 ### Manual checkpoint for this increment
 
 1. Start the backend dependencies and API, then run `npm run dev`.

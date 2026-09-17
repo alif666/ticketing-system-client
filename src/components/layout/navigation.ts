@@ -42,7 +42,7 @@ export const navigationItems: NavigationItem[] = [
     label: "User management",
     path: "/users",
     icon: UsersRound,
-    implemented: false,
+    implemented: true,
     roles: ["APP_ADMIN", "CLIENT_ADMIN"],
   },
   {
