@@ -183,7 +183,13 @@ export function IssueDetail({
                         {formatDate(entry.createdAt)}
                       </time>
                     </div>
-                    {entry.oldValue && (
+                    {entry.oldValue === null && entry.newValue !== null && (
+                      <p className="mt-1 text-muted-foreground">
+                        {entry.fieldName === "verificationReason" && "Reason: "}
+                        {entry.newValue}
+                      </p>
+                    )}
+                    {entry.oldValue !== null && (
                       <p className="mt-1 text-muted-foreground">
                         {entry.oldValue} → {entry.newValue}
                       </p>
